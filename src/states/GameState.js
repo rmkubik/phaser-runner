@@ -14,6 +14,7 @@ class GameState extends Phaser.State {
 		}
 		this.ground = this.game.add.group();
 		this.game.stage.backgroundColor = "#3498db";
+		this.cursors = this.game.input.keyboard.createCursorKeys();
 	}
 
 	preload() {
@@ -25,10 +26,13 @@ class GameState extends Phaser.State {
 
 		let center = { x: this.game.world.centerX, y: this.game.world.centerY }
 		
-		this.player = this.game.add.sprite(0, 0, 'spritesheet', 'alienGreen_walk1.png');
+		this.player = this.game.add.sprite(0, 0, 'spritesheet', 'alienGreen_stand.png');
 		this.player.scale.setTo(0.5);
+		this.player.anchor.setTo(0.5);
 		this.game.physics.arcade.enable(this.player);
-		this.player.body.gravity.y = 300;
+		this.player.body.gravity.y = 400;
+
+		this.player.animations.add('walk', ['alienGreen_walk1.png','alienGreen_walk2.png'], 6, true);
 
 		this.ground.enableBody = true;
 		this.groundData.forEach((groundHeight, index) => {
@@ -45,7 +49,49 @@ class GameState extends Phaser.State {
 	}
 
 	update() {
-		this.game.physics.arcade.collide(this.player, this.ground);		
+		const playerOnGround = this.game.physics.arcade.collide(this.player, this.ground);		
+
+		this.player.body.velocity.x = 0;
+		if (this.cursors.left.isDown)
+		{
+			//  Move to the left
+			this.player.body.velocity.x = -150;
+	
+			this.player.animations.play('walk');
+		}
+		else if (this.cursors.right.isDown)
+		{
+			//  Move to the right
+			this.player.body.velocity.x = 150;
+	
+			this.player.animations.play('walk');
+		}
+		else
+		{
+			//  Stand still
+			this.player.animations.stop();
+
+			this.player.frameName = 'alienGreen_stand.png';
+	
+			// this.player.frame = 4;
+		}
+	
+		//  Allow the player to jump if they are touching the ground.
+		if (this.cursors.up.isDown && this.player.body.touching.down && playerOnGround)
+		{
+			this.player.body.velocity.y = -350;
+		}
+
+		if (this.player.body.velocity.y !== 0) {
+			this.player.animations.stop();
+			this.player.frameName = 'alienGreen_jump.png';
+		}
+
+		if (this.player.body.velocity.x < 0) {
+			this.player.scale.x = -0.5;
+		} else {
+			this.player.scale.x = 0.5;
+		}
 	}
 
 }
