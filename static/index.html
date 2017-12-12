@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Phaser with a sprinkle of ES6 Dust!</title>
+	<title>Phaser Runner</title>
 	<link rel="stylesheet" href="styles/font-awesome.min.css">
 	<link rel="stylesheet" href="styles/bootstrap.min.css">
 	<link rel="stylesheet" href="styles/main.css">
@@ -10,8 +10,8 @@
 <body>
 	<div class="container">
 		<h1>Phaser Lunch &amp; Learn</h1>
-		<div class="row">
-			<div class="col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-body">
 				<div id="content"></div>
 			</div>
 		</div>
@@ -23,9 +23,23 @@
 						<input id="text_input" type="text" class="form-control"/>
 					</div>
 					<button id="text_button" class="btn btn-default">Submit</button>
-					<button id="text_erase" class="btn btn-default">
+					<button id="text_erase" class="btn btn-danger">
 						<i class="fa fa-eraser" aria-hidden="true"></i>	
 					</button>				
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="form-inline">
+					<div class="form-group">
+						<label>Debug Mode</label>
+						<button id="debug_button" class="btn btn-default">Toggle</button>
+					</div>	
+					<div class="form-group">
+						<label>New Level</label>
+						<button id="generate_button" class="btn btn-default">Generate</button>
+					</div>			
 				</div>
 			</div>
 		</div>

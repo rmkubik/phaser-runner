@@ -20,6 +20,8 @@ class GameState extends Phaser.State {
 
 		this.game.stage.backgroundColor = "#3498db";
 		this.cursors = this.game.input.keyboard.createCursorKeys();
+
+		this.debugMode = false;
 	}
 
 	preload() {
@@ -53,6 +55,14 @@ class GameState extends Phaser.State {
 				this.text.destroy();
 			}
 		};
+
+		document.getElementById("debug_button").onclick = () => {
+			this.debugMode = !this.debugMode;
+		}
+
+		document.getElementById("generate_button").onclick = () => {
+			this.restartLevel();
+		}
 	}
 
 	update() {
@@ -67,8 +77,12 @@ class GameState extends Phaser.State {
 	}
 
 	render() {
-		this.game.debug.bodyInfo(this.player, 32, 32);
-        this.game.debug.body(this.player);
+		if (this.debugMode) {
+			this.game.debug.bodyInfo(this.player, 32, 32);
+			this.game.debug.body(this.player);
+		} else {
+			this.game.debug.reset();
+		}
 	}
 
 	restartLevel() {  
