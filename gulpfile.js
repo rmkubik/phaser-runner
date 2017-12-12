@@ -18,10 +18,12 @@ var browserSync = require('browser-sync');
 var PHASER_PATH = './node_modules/phaser/build/';
 var BUILD_PATH = './build';
 var SCRIPTS_PATH = BUILD_PATH + '/scripts';
+var STYLES_PATH = BUILD_PATH + '/styles';
 var SOURCE_PATH = './src';
 var STATIC_PATH = './static';
 var ENTRY_FILE = SOURCE_PATH + '/index.js';
 var OUTPUT_FILE = 'game.js';
+var BOOTSTRAP_CSS_MIN_PATH = './node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 var keepFiles = false;
 
@@ -66,6 +68,14 @@ function cleanBuild() {
 function copyStatic() {
     return gulp.src(STATIC_PATH + '/**/*')
         .pipe(gulp.dest(BUILD_PATH));
+}
+
+/**
+ * Copies the bootstrap minified CSS to the build folder.
+ */
+function copyCSS() {
+    return gulp.src(BOOTSTRAP_CSS_MIN_PATH)
+        .pipe(gulp.dest(STYLES_PATH));
 }
 
 /**
@@ -156,7 +166,8 @@ function serve() {
 
 gulp.task('cleanBuild', cleanBuild);
 gulp.task('copyStatic', ['cleanBuild'], copyStatic);
-gulp.task('copyPhaser', ['copyStatic'], copyPhaser);
+gulp.task('copyCSS', ['copyStatic'], copyCSS);
+gulp.task('copyPhaser', ['copyCSS'], copyPhaser);
 gulp.task('build', ['copyPhaser'], build);
 gulp.task('fastBuild', build);
 gulp.task('serve', ['build'], serve);

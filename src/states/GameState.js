@@ -41,6 +41,8 @@ class GameState extends Phaser.State {
 			x: (this.groundData.length - 1) * 64, 
 			y: this.game.world.height - this.groundData[this.groundData.length - 1] * 64
 		});
+
+		// const textTest = new RainbowText(this.game, 0, 0, "WOW!");
 	}
 
 	update() {

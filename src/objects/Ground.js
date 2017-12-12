@@ -1,4 +1,5 @@
 class Ground extends Phaser.Group {
+	
     constructor(game, groundData) {
         super(game);
 

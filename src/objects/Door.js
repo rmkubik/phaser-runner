@@ -3,7 +3,8 @@ class Door extends Phaser.Group {
     constructor(game, position) {
         super(game);
 
-        const doorYAdjust = 64;
+		const doorYAdjust = 64;
+		
 
         this.enableBody = true;
 		this.create(position.x, position.y - 64, 'spritesheet', 'doorOpen_mid.png');
