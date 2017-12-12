@@ -71,7 +71,6 @@ class GameState extends Phaser.State {
 		const playerOnGround = this.game.physics.arcade.collide(this.player, this.ground);	
 		this.game.physics.arcade.overlap(this.player, this.exit, () => {
 			if (this.player.body.touching.down && playerOnGround) {
-				console.log("exit");
 				this.restartLevel();
 			}
 		});	
