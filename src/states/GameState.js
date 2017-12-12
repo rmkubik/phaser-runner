@@ -42,7 +42,11 @@ class GameState extends Phaser.State {
 			y: this.game.world.height - this.groundData[this.groundData.length - 1] * 64
 		});
 
-		// const textTest = new RainbowText(this.game, 0, 0, "WOW!");
+		document.getElementById("text_button").onclick = () => {
+			const textInput = document.getElementById("text_input");
+			this.createCrazyText(10, 10, textInput.value);
+			textInput.value = "";
+		};
 	}
 
 	update() {
@@ -64,6 +68,10 @@ class GameState extends Phaser.State {
 	restartLevel() {  
 		this.game.stage.removeChild(this.player);  
 		this.game.state.start(this.game.state.current);
+	}
+
+	createCrazyText(x, y, text) {
+		const textTest = new RainbowText(this.game, x, y, text);
 	}
 
 }
