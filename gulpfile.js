@@ -1,5 +1,6 @@
 var del = require('del');
 var gulp = require('gulp');
+var merge = require('merge-stream');
 var path = require('path');
 var argv = require('yargs').argv;
 var gutil = require('gulp-util');
@@ -19,11 +20,14 @@ var PHASER_PATH = './node_modules/phaser/build/';
 var BUILD_PATH = './build';
 var SCRIPTS_PATH = BUILD_PATH + '/scripts';
 var STYLES_PATH = BUILD_PATH + '/styles';
+var FONT_PATH = BUILD_PATH + '/fonts';
 var SOURCE_PATH = './src';
 var STATIC_PATH = './static';
 var ENTRY_FILE = SOURCE_PATH + '/index.js';
 var OUTPUT_FILE = 'game.js';
-var BOOTSTRAP_CSS_MIN_PATH = './node_modules/bootstrap/dist/css/bootstrap.min.css'
+var BOOTSTRAP_CSS_MIN_PATH = './node_modules/bootstrap/dist/css/bootstrap.min.css';
+var FONT_AWESOME_CSS_MIN_PATH  = './node_modules/font-awesome/css/font-awesome.min.css';
+var FONT_AWESOME_FONT_PATH  = './node_modules/font-awesome/fonts/*';
 
 var keepFiles = false;
 
@@ -74,8 +78,18 @@ function copyStatic() {
  * Copies the bootstrap minified CSS to the build folder.
  */
 function copyCSS() {
-    return gulp.src(BOOTSTRAP_CSS_MIN_PATH)
+    var bootstrap = gulp.src(BOOTSTRAP_CSS_MIN_PATH)
         .pipe(gulp.dest(STYLES_PATH));
+
+    var font_awesome = gulp.src(FONT_AWESOME_CSS_MIN_PATH)
+        .pipe(gulp.dest(STYLES_PATH));
+
+    return merge(bootstrap, font_awesome);
+}
+
+function copyFonts() {
+    return gulp.src(FONT_AWESOME_FONT_PATH)
+        .pipe(gulp.dest(FONT_PATH));
 }
 
 /**
@@ -167,7 +181,8 @@ function serve() {
 gulp.task('cleanBuild', cleanBuild);
 gulp.task('copyStatic', ['cleanBuild'], copyStatic);
 gulp.task('copyCSS', ['copyStatic'], copyCSS);
-gulp.task('copyPhaser', ['copyCSS'], copyPhaser);
+gulp.task('copyFonts', ['copyCSS'], copyFonts);
+gulp.task('copyPhaser', ['copyFonts'], copyPhaser);
 gulp.task('build', ['copyPhaser'], build);
 gulp.task('fastBuild', build);
 gulp.task('serve', ['build'], serve);

@@ -44,8 +44,14 @@ class GameState extends Phaser.State {
 
 		document.getElementById("text_button").onclick = () => {
 			const textInput = document.getElementById("text_input");
-			this.createCrazyText(10, 10, textInput.value);
+			this.text = this.createCrazyText(10, 10, textInput.value);
 			textInput.value = "";
+		};
+
+		document.getElementById("text_erase").onclick = () => {
+			if (this.text) {
+				this.text.destroy();
+			}
 		};
 	}
 
@@ -71,7 +77,7 @@ class GameState extends Phaser.State {
 	}
 
 	createCrazyText(x, y, text) {
-		const textTest = new RainbowText(this.game, x, y, text);
+		return new RainbowText(this.game, x, y, text);
 	}
 
 }
