@@ -28,17 +28,19 @@ class GameState extends Phaser.State {
 
 	create() {
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		
+
 		this.ground = new Ground(this.game, this.groundData);
 
-		const startX = 32;
 		const startYAdjust = 64;
-		const startY = this.game.world.height - this.groundData[0] * 64 - startYAdjust;
-		this.player = new Player(this.game, {x: startX, y: startY});
+		this.player = new Player(this.game, {
+			x: 32, // half width of player to get him on screen
+			y: this.game.world.height - this.groundData[0] * 64 - startYAdjust
+		});
 
-		const doorX = (this.groundData.length - 1) * 64;
-		const doorY = this.game.world.height - this.groundData[this.groundData.length - 1] * 64;		
-		this.exit = new Door(this.game, {x: doorX, y: doorY});
+		this.exit = new Door(this.game, {
+			x: (this.groundData.length - 1) * 64, 
+			y: this.game.world.height - this.groundData[this.groundData.length - 1] * 64
+		});
 	}
 
 	update() {
