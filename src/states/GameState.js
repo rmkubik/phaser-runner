@@ -1,11 +1,14 @@
 import RainbowText from 'objects/RainbowText';
 import Player from 'objects/Player';
 import Door from 'objects/Door';
+import Ground from 'objects/Ground';
 
 class GameState extends Phaser.State {
 
 	init() {
 		this.player;
+		this.ground;
+		this.exit;
 
 		const groundLength = 12;
 		const minGroundHeight = 1;
@@ -14,12 +17,9 @@ class GameState extends Phaser.State {
 		for (let i = 0; i < groundLength; i++) {
 			this.groundData.push(this.game.rnd.integerInRange(minGroundHeight, maxGroundHeight));
 		}
-		this.ground = this.game.add.group();
 
 		this.game.stage.backgroundColor = "#3498db";
 		this.cursors = this.game.input.keyboard.createCursorKeys();
-
-		this.exit;
 	}
 
 	preload() {
@@ -28,21 +28,8 @@ class GameState extends Phaser.State {
 
 	create() {
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-		let center = { x: this.game.world.centerX, y: this.game.world.centerY }
-
-		this.ground.enableBody = true;
-		this.groundData.forEach((groundHeight, index) => {
-			for (let y = 0; y < groundHeight; y++) {
-				let spriteKey = 'grassMid.png';
-				if (y < groundHeight - 1) {
-					spriteKey = 'grassCenter.png'
-				}
-				const tile = this.ground.create(index * (64), this.game.height - ((y + 1) * 64), 'spritesheet', spriteKey);
-				tile.scale.setTo(0.5);
-				tile.body.immovable = true;
-			}
-		});
+		
+		this.ground = new Ground(this.game, this.groundData);
 
 		const startX = 32;
 		const startYAdjust = 64;
