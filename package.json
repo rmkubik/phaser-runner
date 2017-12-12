@@ -29,6 +29,7 @@
     "yargs": "^4.6.0"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "phaser": "^2.4.7"
   }
 }
