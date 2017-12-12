@@ -1,4 +1,5 @@
 import RainbowText from 'objects/RainbowText';
+import Player from 'objects/Player';
 
 class GameState extends Phaser.State {
 
@@ -42,17 +43,10 @@ class GameState extends Phaser.State {
 			}
 		});
 
-		const startX = 0;
+		const startX = 32;
 		const startYAdjust = 64;
 		const startY = this.game.world.height - this.groundData[0] * 64 - startYAdjust;
-
-		this.player = this.game.add.sprite(startX, startY, 'spritesheet', 'alienGreen_stand.png');
-		this.player.scale.setTo(0.5);
-		this.player.anchor.setTo(0.5);
-		this.game.physics.arcade.enable(this.player);
-		this.player.body.gravity.y = 400;
-
-		this.player.animations.add('walk', ['alienGreen_walk1.png','alienGreen_walk2.png'], 6, true);
+		this.player = new Player(this.game, {x: startX, y: startY});
 
 		const doorX = (this.groundData.length - 1) * 64;
 		const doorY = this.game.world.height - this.groundData[this.groundData.length - 1] * 64;
@@ -75,37 +69,16 @@ class GameState extends Phaser.State {
 			}
 		});	
 
-		this.player.body.velocity.x = 0;
-		if (this.cursors.left.isDown)
-		{
-			this.player.body.velocity.x = -150;
-			this.player.animations.play('walk');
-			this.player.scale.x = -0.5;
-		}
-		else if (this.cursors.right.isDown)
-		{
-			this.player.body.velocity.x = 150;
-			this.player.animations.play('walk');
-			this.player.scale.x = 0.5;
-		}
-		else
-		{
-			this.player.animations.stop();
-			this.player.frameName = 'alienGreen_stand.png';
-		}
-	
-		if (this.cursors.up.isDown && this.player.body.touching.down && playerOnGround)
-		{
-			this.player.body.velocity.y = -350;
-		}
-
-		if (this.player.body.velocity.y !== 0) {
-			this.player.animations.stop();
-			this.player.frameName = 'alienGreen_jump.png';
-		}
+		this.player._update(this.cursors, playerOnGround);
 	}
 
-	restartLevel() {    
+	render() {
+		this.game.debug.bodyInfo(this.player, 32, 32);
+        this.game.debug.body(this.player);
+	}
+
+	restartLevel() {  
+		this.game.stage.removeChild(this.player);  
 		this.game.state.start(this.game.state.current);
 	}
 
