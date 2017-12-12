@@ -1,5 +1,6 @@
 import RainbowText from 'objects/RainbowText';
 import Player from 'objects/Player';
+import Door from 'objects/Door';
 
 class GameState extends Phaser.State {
 
@@ -18,7 +19,7 @@ class GameState extends Phaser.State {
 		this.game.stage.backgroundColor = "#3498db";
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 
-		this.exit = this.game.add.group();
+		this.exit;
 	}
 
 	preload() {
@@ -49,16 +50,8 @@ class GameState extends Phaser.State {
 		this.player = new Player(this.game, {x: startX, y: startY});
 
 		const doorX = (this.groundData.length - 1) * 64;
-		const doorY = this.game.world.height - this.groundData[this.groundData.length - 1] * 64;
-		const doorYAdjust = 64;
-		
-		this.exit.enableBody = true;
-		this.exit.create(doorX, doorY - 64, 'spritesheet', 'doorOpen_mid.png');
-		this.exit.create(doorX, doorY - doorYAdjust - 64, 'spritesheet', 'doorOpen_top.png');
-		this.exit.forEach((doorPiece) => {
-			doorPiece.scale.setTo(0.5);
-			doorPiece.body.immovable = true;
-		});
+		const doorY = this.game.world.height - this.groundData[this.groundData.length - 1] * 64;		
+		this.exit = new Door(this.game, {x: doorX, y: doorY});
 	}
 
 	update() {
