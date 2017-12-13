@@ -44,25 +44,7 @@ class GameState extends Phaser.State {
 			y: this.game.world.height - this.groundData[this.groundData.length - 1] * 64
 		});
 
-		document.getElementById("text_button").onclick = () => {
-			const textInput = document.getElementById("text_input");
-			this.text = this.createCrazyText(10, 10, textInput.value);
-			textInput.value = "";
-		};
-
-		document.getElementById("text_erase").onclick = () => {
-			if (this.text) {
-				this.text.destroy();
-			}
-		};
-
-		document.getElementById("debug_button").onclick = () => {
-			this.debugMode = !this.debugMode;
-		}
-
-		document.getElementById("generate_button").onclick = () => {
-			this.restartLevel();
-		}
+		this.bindButtonEvents();
 	}
 
 	update() {
@@ -82,6 +64,28 @@ class GameState extends Phaser.State {
 			this.game.debug.body(this.player);
 		} else {
 			this.game.debug.reset();
+		}
+	}
+
+	bindButtonEvents() {
+		document.getElementById("text_button").onclick = () => {
+			const textInput = document.getElementById("text_input");
+			this.text = this.createCrazyText(10, 10, textInput.value);
+			textInput.value = "";
+		};
+
+		document.getElementById("text_erase").onclick = () => {
+			if (this.text) {
+				this.text.destroy();
+			}
+		};
+
+		document.getElementById("debug_button").onclick = () => {
+			this.debugMode = !this.debugMode;
+		}
+
+		document.getElementById("generate_button").onclick = () => {
+			this.restartLevel();
 		}
 	}
 

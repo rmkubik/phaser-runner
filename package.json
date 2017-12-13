@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "gulp",
-    "production": "gulp --production"
+    "production": "gulp --production",
+    "deploy": "surge -d clumsy-story.surge.sh/ -p ./build"
   },
   "repository": {
     "type": "git",
